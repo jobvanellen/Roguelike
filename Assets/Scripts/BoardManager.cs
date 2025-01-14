@@ -12,38 +12,40 @@ public class BoardManager : MonoBehaviour
         public bool isPassable;
     }
 
-    private CellData[,] m_boardData;
+    private CellData[,] m_BoardData;
+    private Tilemap m_TileMap;
 
-    private Tilemap tileMap;
-
-    public int width;
-    public int height;
-    public Tile[] groundTiles;
-    public Tile[] wallTiles;
+    public int Width;
+    public int Height;
+    public Tile[] GroundTiles;
+    public Tile[] BlockingTiles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        tileMap = GetComponentInChildren<Tilemap>();
+        m_TileMap = GetComponentInChildren<Tilemap>();
 
-        for (int x = 0; x < width; x++)
+        m_BoardData = new CellData[Width, Height];
+
+        for (int y = 0; y < Height; ++y)
         {
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < Width; ++x)
             {
                 Tile tile;
-                CellData cellData = new CellData();
-                if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                m_BoardData[x, y] = new CellData();
+
+                if (x == 0 || y == 0 || x == Width - 1 || y == Height - 1)
                 {
-                    tile = wallTiles[Random.Range(0, wallTiles.Length)];
-                    cellData.isPassable = false;
+                    tile = BlockingTiles[Random.Range(0, BlockingTiles.Length)];
+                    m_BoardData[x, y].isPassable = false;
                 }
                 else
                 {
-                    tile = groundTiles[Random.Range(0, groundTiles.Length)];
-                    cellData.isPassable = true;
+                    tile = GroundTiles[Random.Range(0, GroundTiles.Length)];
+                    m_BoardData[x, y].isPassable = true;
                 }
-                tileMap.SetTile(new Vector3Int(x, y, 0), tile);
-                m_boardData[x, y] = cellData;
+
+                m_TileMap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
     }

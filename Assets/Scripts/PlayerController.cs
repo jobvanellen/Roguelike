@@ -43,8 +43,8 @@ public class PlayerController : MonoBehaviour
             BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
             if(cellData != null && cellData.isPassable)
             {
-                m_CellPosition = newCellTarget;
-                transform.position = m_Board.CellToWorld(m_CellPosition);
+                GameManager.Instance.m_TurnManager.Tick();
+                MoveTo(newCellTarget);
             }
         }
     }
@@ -52,8 +52,12 @@ public class PlayerController : MonoBehaviour
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {
         m_Board = boardManager;
-        m_CellPosition = cell;
+        MoveTo(cell);
+    }
 
+    public void MoveTo(Vector2Int cell)
+    {
+        m_CellPosition = cell;
         transform.position = m_Board.CellToWorld(cell);
     }
 }

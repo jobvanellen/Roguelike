@@ -61,9 +61,13 @@ public class BoardManager : MonoBehaviour
         return m_Grid.GetCellCenterWorld(new Vector3Int(cell.x, cell.y, 0));
     }
 
-    // Update is called once per frame
-    void Update()
+    public CellData GetCellData(Vector2Int cell)
     {
-        
+        if(cell.x < 0 || cell.x >= Width || cell.y < 0 || cell.y >= Height)
+        {
+            return null;
+        }
+        return m_BoardData[cell.x, cell.y];
     }
+
 }

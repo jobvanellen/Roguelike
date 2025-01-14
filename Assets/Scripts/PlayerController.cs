@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +14,39 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Vector2Int newCellTarget = m_CellPosition;
+        bool hasMoved = false;
+
+        if(Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            newCellTarget.y += 1;
+            hasMoved = true;
+        }
+        else if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            newCellTarget.y -= 1;
+            hasMoved = true;
+        }
+        else if (Keyboard.current.aKey.wasPressedThisFrame)
+        {
+            newCellTarget.x -= 1;
+            hasMoved = true;
+        }
+        else if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            newCellTarget.x += 1;
+            hasMoved = true;
+        }
+
+        if (hasMoved)
+        {
+            BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
+            if(cellData != null && cellData.isPassable)
+            {
+                m_CellPosition = newCellTarget;
+                transform.position = m_Board.CellToWorld(m_CellPosition);
+            }
+        }
     }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)

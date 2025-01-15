@@ -5,15 +5,26 @@ public class PlayerController : MonoBehaviour
 {
     private BoardManager m_Board;
     private Vector2Int m_CellPosition;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private bool m_GameOver = false;
+
+    public void Init()
     {
-        
+        m_GameOver = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(m_GameOver)
+        {
+            if(Keyboard.current.enterKey.wasPressedThisFrame)
+            {
+                GameManager.Instance.StartNewGame();
+            }
+            return;
+        }
+
         Vector2Int newCellTarget = m_CellPosition;
         bool hasMoved = false;
 
@@ -69,5 +80,10 @@ public class PlayerController : MonoBehaviour
     {
         m_CellPosition = cell;
         transform.position = m_Board.CellToWorld(cell);
+    }
+
+    public void GameOver()
+    {
+        m_GameOver = true;
     }
 }

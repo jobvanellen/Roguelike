@@ -656,6 +656,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8d43370c993087547ad73682c715f06d, type: 2}
   - {fileID: 11400000, guid: 4cf6589a17bc3754cb6110c091b2a05c, type: 2}
   Player: {fileID: 1372654604}
+  Exit: {fileID: 2334472610373922324, guid: 26f37610baa5a924ba61cf31775c2a95, type: 3}
+  FoodPrefabs:
+  - {fileID: 3521024765986255330, guid: 57f8c0836de1c384582f8b46ff8686ce, type: 3}
+  - {fileID: -7113402832809812235, guid: aac33e9f1d8e451499f40c9d9a99d702, type: 3}
+  WallPrefabs:
+  - {fileID: 4981029249899752550, guid: 038e1d3a8dd8dc24eaeefe1f41d57db2, type: 3}
+  - {fileID: 4981029249899752550, guid: 77527a57a5211804fb38d6f0f97ced27, type: 3}
+  - {fileID: 4981029249899752550, guid: a12652fce5eb31149829299a3e51a2f0, type: 3}
 --- !u!156049354 &1967485097
 Grid:
   m_ObjectHideFlags: 0

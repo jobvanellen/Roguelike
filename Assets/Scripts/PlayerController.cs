@@ -89,11 +89,6 @@ public class PlayerController : MonoBehaviour
                 {
                     MoveSmoothlyTo(newCellTarget);
                 }
-                else
-                {
-                    m_Animator.SetTrigger("Attack");
-                }
-
             }
         }
     }
@@ -135,5 +130,10 @@ public class PlayerController : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
+    }
+
+    public void Attack()
+    {
+        m_Animator.SetTrigger("Attack");    
     }
 }

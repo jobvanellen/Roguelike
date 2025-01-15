@@ -22,6 +22,7 @@ public class WallObject : CellObject
 
     public override bool PlayerWantsToEnter()
     {
+        GameManager.Instance.PlayerController.Attack();
         m_HP--;
         if(m_HP == 1)
         {
@@ -31,7 +32,6 @@ public class WallObject : CellObject
         {
             GameManager.Instance.BoardManager.SetCellTile(m_Cell, m_OriginalTile);
             Destroy(gameObject);
-            return true;
         }
         return false;
     }

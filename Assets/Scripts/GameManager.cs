@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             PlayerController.GameOver();
             m_GameOverPanel.style.visibility = Visibility.Visible;
             int finishedLevels = m_CurrentLevel - 1;
-            m_GameOverLabel.text = "Game Over\n\nYou Traveled through " + finishedLevels + " level" + (finishedLevels == 1 ? "" : "s") + "\n\nPress ENTER to restart";
+            m_GameOverLabel.text = "Game Over\n\nYou traveled through " + finishedLevels + " level" + (finishedLevels == 1 ? "" : "s") + "\n\nPress ENTER to restart";
         }
     }
 }

@@ -25,6 +25,7 @@ public class BoardManager : MonoBehaviour
     
     public List<CellObject> FoodPrefabs;
     public List<CellObject> WallPrefabs;
+    public CellObject EnemyPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -34,7 +35,6 @@ public class BoardManager : MonoBehaviour
 
         m_EmptyCells = new List<Vector2Int>();
         m_BoardData = new CellData[Width, Height];
-
 
 
         for (int y = 0; y < Height; ++y)
@@ -68,6 +68,7 @@ public class BoardManager : MonoBehaviour
 
         GenerateObjects(WallPrefabs, Random.Range(6, 10));
         GenerateObjects(FoodPrefabs, Random.Range(2, 6));
+        GenerateObjects(new List<CellObject> { EnemyPrefab }, Random.Range(1, 4));
     }
 
     public Vector3 CellToWorld(Vector2Int cell)
@@ -114,7 +115,7 @@ public class BoardManager : MonoBehaviour
     {
         return m_TileMap.GetTile<Tile>(new Vector3Int(cellIndex.x, cellIndex.y, 0));
     }
-
+    
     public void ClearLevel()
     {
         if(m_BoardData == null)

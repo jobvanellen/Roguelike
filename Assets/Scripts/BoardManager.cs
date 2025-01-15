@@ -9,7 +9,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool isPassable;
-        public GameObject ContainedObject;
+        public CellObject ContainedObject;
     }
 
     private CellData[,] m_BoardData;
@@ -23,8 +23,8 @@ public class BoardManager : MonoBehaviour
     public Tile[] BlockingTiles;
 
     public PlayerController Player;
-    public GameObject SmallFoodPrefab;
-    public GameObject BigFoodPrefab;
+    public FoodObject SmallFoodPrefab;
+    public FoodObject BigFoodPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -79,7 +79,7 @@ public class BoardManager : MonoBehaviour
     public void GenerateFood()
     {
         int foodCount = Random.Range(2, 6);
-        List<GameObject> foodPrefabs = new List<GameObject>();
+        List<FoodObject> foodPrefabs = new List<FoodObject>();
         foodPrefabs.Add(SmallFoodPrefab);
         foodPrefabs.Add(BigFoodPrefab);
         for (int i = 0; i < foodCount; ++i)
@@ -90,7 +90,7 @@ public class BoardManager : MonoBehaviour
             CellData data = m_BoardData[coord.x, coord.y];
 
             int foodIndex = Random.Range(0, 2);
-            GameObject newFood = Instantiate(foodPrefabs[foodIndex]);
+            FoodObject newFood = Instantiate(foodPrefabs[foodIndex]);
             newFood.transform.position = CellToWorld(new Vector2Int(coord.x, coord.y));
             data.ContainedObject = newFood; 
             m_EmptyCells.RemoveAt(randomIndex);

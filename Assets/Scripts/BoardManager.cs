@@ -25,6 +25,7 @@ public class BoardManager : MonoBehaviour
     public PlayerController Player;
     public FoodObject SmallFoodPrefab;
     public FoodObject BigFoodPrefab;
+    public WallObject WallPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -59,6 +60,7 @@ public class BoardManager : MonoBehaviour
         }
 
         m_EmptyCells.Remove(new Vector2Int(1, 1));
+        GenerateWalls();
         GenerateFood();
     }
 
@@ -69,7 +71,7 @@ public class BoardManager : MonoBehaviour
 
     public CellData GetCellData(Vector2Int cell)
     {
-        if(cell.x < 0 || cell.x >= Width || cell.y < 0 || cell.y >= Height)
+        if (cell.x < 0 || cell.x >= Width || cell.y < 0 || cell.y >= Height)
         {
             return null;
         }
@@ -84,7 +86,7 @@ public class BoardManager : MonoBehaviour
         foodPrefabs.Add(BigFoodPrefab);
         for (int i = 0; i < foodCount; ++i)
         {
-            
+
             int randomIndex = Random.Range(0, m_EmptyCells.Count);
             Vector2Int coord = m_EmptyCells[randomIndex];
             CellData data = m_BoardData[coord.x, coord.y];
@@ -92,8 +94,32 @@ public class BoardManager : MonoBehaviour
             int foodIndex = Random.Range(0, 2);
             FoodObject newFood = Instantiate(foodPrefabs[foodIndex]);
             newFood.transform.position = CellToWorld(new Vector2Int(coord.x, coord.y));
-            data.ContainedObject = newFood; 
+            data.ContainedObject = newFood;
             m_EmptyCells.RemoveAt(randomIndex);
         }
+    }
+
+    public void GenerateWalls()
+    {
+        int wallCount = Random.Range(6, 10);
+        for (int i = 0; i < wallCount; ++i)
+        {
+            int randomIndex = Random.Range(0, m_EmptyCells.Count);
+            Vector2Int coord = m_EmptyCells[randomIndex];
+
+            CellData data = m_BoardData[coord.x, coord.y];
+            WallObject newWall = Instantiate(WallPrefab);
+
+            newWall.Init(coord);
+
+            newWall.transform.position = CellToWorld(new Vector2Int(coord.x, coord.y));
+
+            m_EmptyCells.RemoveAt(randomIndex);
+        }
+    }
+
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
+    {
+        m_TileMap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y, 0), tile);
     }
 }

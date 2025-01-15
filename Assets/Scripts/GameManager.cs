@@ -7,7 +7,9 @@ public class GameManager : MonoBehaviour
     public BoardManager BoardManager;
     public PlayerController PlayerController;
 
-    public TurnManager m_TurnManager{ get; private set; }
+    public TurnManager TurnManager { get; private set; }
+
+    private int m_foodAmount = 100;
 
     private void Awake()
     {
@@ -22,9 +24,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        m_TurnManager = new TurnManager();
+        TurnManager = new TurnManager();
+        TurnManager.OnTick += OnTurnHappen;
 
         BoardManager.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+    }
+
+    void OnTurnHappen()
+    {
+        m_foodAmount -= 1;
+        Debug.Log("Current amount of food : " + m_foodAmount);
     }
 }

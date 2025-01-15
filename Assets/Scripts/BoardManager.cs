@@ -118,6 +118,14 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public void AddObject(CellObject obj, Vector2Int cell)
+    {
+        CellData data = m_BoardData[cell.x, cell.y];
+        obj.transform.position = CellToWorld(cell);
+        data.ContainedObject = obj;
+        obj.Init(cell);
+    }
+
     public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
         m_TileMap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y, 0), tile);

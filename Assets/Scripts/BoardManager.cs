@@ -23,6 +23,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] BlockingTiles;
 
     public PlayerController Player;
+    public ExitCellObject Exit;
     
     public List<CellObject> FoodPrefabs;
     public List<CellObject> WallPrefabs;
@@ -62,6 +63,10 @@ public class BoardManager : MonoBehaviour
         }
 
         m_EmptyCells.Remove(new Vector2Int(1, 1));
+
+        Vector2Int endCoord = new Vector2Int(Width - 2, Height - 2);
+        AddObject(Instantiate(Exit), endCoord);
+        m_EmptyCells.Remove(endCoord);
 
         GenerateObjects(WallPrefabs, Random.Range(6, 10));
         GenerateObjects(FoodPrefabs, Random.Range(2, 6));

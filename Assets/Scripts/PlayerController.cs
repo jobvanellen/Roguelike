@@ -8,9 +8,15 @@ public class PlayerController : MonoBehaviour
 
     private bool m_GameOver = false;
 
+    private bool m_isMoving;
+    private Vector3 m_TargetPosition;
+
+    public float MoveSpeed = 5.0f;
+
     public void Init()
     {
         m_GameOver = false;
+        m_isMoving = false;
     }
 
     // Update is called once per frame
@@ -23,6 +29,13 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.StartNewGame();
             }
             return;
+        }
+
+        if (m_isMoving)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, m_TargetPosition, MoveSpeed * Time.deltaTime);
+            checkPickup();
+
         }
 
         Vector2Int newCellTarget = m_CellPosition;
@@ -51,6 +64,10 @@ public class PlayerController : MonoBehaviour
 
         if (hasMoved)
         {
+            if(m_isMoving)
+            {
+                MoveDirectlyTo(new Vector2Int((int)m_TargetPosition.x, (int)m_TargetPosition.y));
+            }
             BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
 
             if(cellData != null && cellData.isPassable)
@@ -59,12 +76,11 @@ public class PlayerController : MonoBehaviour
 
                 if (cellData.ContainedObject == null)
                 {
-                    MoveTo(newCellTarget);
+                    MoveSmoothlyTo(newCellTarget);
                 }
                 else if (cellData.ContainedObject.PlayerWantsToEnter())
                 {
-                    MoveTo(newCellTarget);
-                    cellData.ContainedObject.PlayerEntered();
+                    MoveSmoothlyTo(newCellTarget);
                 }
             }
         }
@@ -73,13 +89,35 @@ public class PlayerController : MonoBehaviour
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {
         m_Board = boardManager;
-        MoveTo(cell);
+        MoveDirectlyTo(cell);
     }
 
-    public void MoveTo(Vector2Int cell)
+    public void checkPickup()
+    {
+        if (transform.position == m_TargetPosition)
+        {
+            m_isMoving = false;
+            var cellData = m_Board.GetCellData(m_CellPosition);
+            if (cellData.ContainedObject != null)
+            {
+                cellData.ContainedObject.PlayerEntered();
+            }
+        }
+    }
+
+    public void MoveSmoothlyTo(Vector2Int cell)
+    {
+        m_CellPosition = cell;
+
+        m_isMoving = true;
+        m_TargetPosition = m_Board.CellToWorld(cell);
+    }
+
+    public void MoveDirectlyTo(Vector2Int cell)
     {
         m_CellPosition = cell;
         transform.position = m_Board.CellToWorld(cell);
+        checkPickup();
     }
 
     public void GameOver()

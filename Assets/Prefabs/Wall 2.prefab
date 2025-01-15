@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7091612741903812054}
   - component: {fileID: 4981029249899752550}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: Wall 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57956a4bfd5471a48979dde13238bbb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObstacleTile: {fileID: 11400000, guid: 71ce66d9a10b60b4f93e6c39bfe283ea, type: 2}
-  Max_HP: 3
+  ObstacleTile: {fileID: 11400000, guid: 9110e099c79266a4bac9325dbe0b1026, type: 2}
+  Max_HP: 4

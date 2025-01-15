@@ -23,9 +23,9 @@ public class BoardManager : MonoBehaviour
     public Tile[] BlockingTiles;
 
     public PlayerController Player;
-    public FoodObject SmallFoodPrefab;
-    public FoodObject BigFoodPrefab;
-    public WallObject WallPrefab;
+    
+    public List<CellObject> FoodPrefabs;
+    public List<CellObject> WallPrefabs;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -35,6 +35,8 @@ public class BoardManager : MonoBehaviour
 
         m_EmptyCells = new List<Vector2Int>();
         m_BoardData = new CellData[Width, Height];
+
+
 
         for (int y = 0; y < Height; ++y)
         {
@@ -60,8 +62,9 @@ public class BoardManager : MonoBehaviour
         }
 
         m_EmptyCells.Remove(new Vector2Int(1, 1));
-        GenerateWalls();
-        GenerateFood();
+
+        GenerateObjects(WallPrefabs, Random.Range(6, 10));
+        GenerateObjects(FoodPrefabs, Random.Range(2, 6));
     }
 
     public Vector3 CellToWorld(Vector2Int cell)
@@ -78,32 +81,15 @@ public class BoardManager : MonoBehaviour
         return m_BoardData[cell.x, cell.y];
     }
 
-    public void GenerateFood()
-    {
-        int foodCount = Random.Range(2, 6);
-        List<FoodObject> foodPrefabs = new List<FoodObject>();
-        foodPrefabs.Add(SmallFoodPrefab);
-        foodPrefabs.Add(BigFoodPrefab);
-        for (int i = 0; i < foodCount; ++i)
-        {
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
-            int foodIndex = Random.Range(0, 2);
-            FoodObject newFood = Instantiate(foodPrefabs[foodIndex]);
-            AddObject(newFood, coord);
-            m_EmptyCells.RemoveAt(randomIndex);
-        }
-    }
 
-    public void GenerateWalls()
+    public void GenerateObjects(List<CellObject> objectList, int amount)
     {
-        int wallCount = Random.Range(6, 10);
-        for (int i = 0; i < wallCount; ++i)
+        for (int i = 0; i < amount; ++i)
         {
             int randomIndex = Random.Range(0, m_EmptyCells.Count);
             Vector2Int coord = m_EmptyCells[randomIndex];
-            WallObject newWall = Instantiate(WallPrefab);
-            AddObject(newWall, coord);
+            CellObject newObject = Instantiate(objectList[Random.Range(0, objectList.Count)]);
+            AddObject(newObject, coord);
             m_EmptyCells.RemoveAt(randomIndex);
         }
     }

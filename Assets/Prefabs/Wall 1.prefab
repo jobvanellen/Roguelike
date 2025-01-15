@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObstacleTile: {fileID: 11400000, guid: fe24bdaeaf60ba14583620da44d7cf2f, type: 2}
+  BrokenTile: {fileID: 11400000, guid: b1e18f76340a5064fad022925f3369df, type: 2}
   Max_HP: 2

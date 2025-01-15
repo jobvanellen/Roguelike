@@ -113,7 +113,7 @@ public class BoardManager : MonoBehaviour
             newWall.Init(coord);
 
             newWall.transform.position = CellToWorld(new Vector2Int(coord.x, coord.y));
-
+            data.ContainedObject = newWall;
             m_EmptyCells.RemoveAt(randomIndex);
         }
     }

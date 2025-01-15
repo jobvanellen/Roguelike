@@ -13,6 +13,13 @@ public class PlayerController : MonoBehaviour
 
     public float MoveSpeed = 5.0f;
 
+    private Animator m_Animator;
+
+    private void Awake()
+    {
+        m_Animator = GetComponent<Animator>();
+    }
+
     public void Init()
     {
         m_GameOver = false;
@@ -82,6 +89,11 @@ public class PlayerController : MonoBehaviour
                 {
                     MoveSmoothlyTo(newCellTarget);
                 }
+                else
+                {
+                    m_Animator.SetTrigger("Attack");
+                }
+
             }
         }
     }

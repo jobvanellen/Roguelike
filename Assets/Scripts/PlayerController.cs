@@ -141,4 +141,9 @@ public class PlayerController : MonoBehaviour
     {
         return m_CellPosition;
     }
+
+    public void GetHit()
+    {
+        m_Animator.SetTrigger("GetHit");
+    }
 }

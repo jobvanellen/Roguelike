@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardManager: {fileID: 1967485096}
   PlayerController: {fileID: 1372654604}
-  InitialFood: 25
+  InitialFood: 50
   UIDoc: {fileID: 600740762}
 --- !u!4 &19981691
 Transform:

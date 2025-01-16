@@ -49,7 +49,7 @@ public class EnemyObject : CellObject
             yDistance == 0 && Mathf.Abs(xDistance) == 1)
         {
             m_animator.SetTrigger("Attack");
-            //GameManager.Instance.PlayerController.GetHit();
+            GameManager.Instance.PlayerController.GetHit();
 
             GameManager.Instance.UpdateFood(-3);
             

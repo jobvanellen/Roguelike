@@ -6,10 +6,13 @@ public class EnemyObject : CellObject
 
     private int m_HP;
 
+    private Animator m_animator;
+
 
     private void Awake()
     {
         GameManager.Instance.TurnManager.OnTick += OnTurn;
+        m_animator = GetComponent<Animator>();
     }
     private void OnDestroy()
     {
@@ -45,7 +48,11 @@ public class EnemyObject : CellObject
         if(xDistance == 0 && Mathf.Abs(yDistance) == 1 ||
             yDistance == 0 && Mathf.Abs(xDistance) == 1)
         {
+            m_animator.SetTrigger("Attack");
+            //GameManager.Instance.PlayerController.GetHit();
+
             GameManager.Instance.UpdateFood(-3);
+            
             return;
         }
 

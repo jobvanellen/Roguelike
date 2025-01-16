@@ -99,7 +99,6 @@ public class PlayerController : MonoBehaviour
                     MoveSmoothlyTo(newCellTarget);
                 }
             }
-            
         }
     }
 

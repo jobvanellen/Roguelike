@@ -42,52 +42,54 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, m_TargetPosition, MoveSpeed * Time.deltaTime);
             checkPickup();
-
         }
 
-        Vector2Int newCellTarget = m_CellPosition;
-        bool hasMoved = false;
+        if (GameManager.Instance.TurnManager.PlayerTurn)
+        {
+            Vector2Int newCellTarget = m_CellPosition;
+            bool hasMoved = false;
 
-        if(Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            newCellTarget.y += 1;
-            hasMoved = true;
-        }
-        else if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            newCellTarget.y -= 1;
-            hasMoved = true;
-        }
-        else if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            newCellTarget.x -= 1;
-            hasMoved = true;
-        }
-        else if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            newCellTarget.x += 1;
-            hasMoved = true;
-        }
-
-        if (hasMoved)
-        {
-            if(m_isMoving)
+            if (Keyboard.current.wKey.wasPressedThisFrame)
             {
-                MoveDirectlyTo(new Vector2Int((int)m_TargetPosition.x, (int)m_TargetPosition.y));
+                newCellTarget.y += 1;
+                hasMoved = true;
             }
-            BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
-
-            if(cellData != null && cellData.isPassable)
+            else if (Keyboard.current.sKey.wasPressedThisFrame)
             {
-                GameManager.Instance.TurnManager.Tick();
+                newCellTarget.y -= 1;
+                hasMoved = true;
+            }
+            else if (Keyboard.current.aKey.wasPressedThisFrame)
+            {
+                newCellTarget.x -= 1;
+                hasMoved = true;
+            }
+            else if (Keyboard.current.dKey.wasPressedThisFrame)
+            {
+                newCellTarget.x += 1;
+                hasMoved = true;
+            }
 
-                if (cellData.ContainedObject == null)
+            if (hasMoved)
+            {
+                if (m_isMoving)
                 {
-                    MoveSmoothlyTo(newCellTarget);
+                    MoveDirectlyTo(new Vector2Int((int)m_TargetPosition.x, (int)m_TargetPosition.y));
                 }
-                else if (cellData.ContainedObject.PlayerWantsToEnter())
+                BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
+
+                if (cellData != null && cellData.isPassable)
                 {
-                    MoveSmoothlyTo(newCellTarget);
+                    GameManager.Instance.TurnManager.Tick();
+
+                    if (cellData.ContainedObject == null)
+                    {
+                        MoveSmoothlyTo(newCellTarget);
+                    }
+                    else if (cellData.ContainedObject.PlayerWantsToEnter())
+                    {
+                        MoveSmoothlyTo(newCellTarget);
+                    }
                 }
             }
         }

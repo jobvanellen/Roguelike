@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         m_GameOverLabel = m_GameOverPanel.Q<Label>("GameOverMessage");
 
         TurnManager = new TurnManager();
-        TurnManager.OnTick += OnTurnHappen;
+        TurnManager.OnPlayerTurn += OnPLayerTurnHappen;
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
 
@@ -64,11 +64,12 @@ public class GameManager : MonoBehaviour
         BoardManager.ClearLevel();
         BoardManager.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+        TurnManager.Init();
 
         m_CurrentLevel++;
     }
 
-    void OnTurnHappen()
+    void OnPLayerTurnHappen()
     {
         UpdateFood(-1);
     }

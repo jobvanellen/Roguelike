@@ -11,12 +11,13 @@ public class EnemyObject : CellObject
 
     private void Awake()
     {
-        GameManager.Instance.TurnManager.OnTick += OnTurn;
+        GameManager.Instance.TurnManager.OnEnemyTurn += OnTurn;
         m_animator = GetComponent<Animator>();
     }
     private void OnDestroy()
     {
-        GameManager.Instance.TurnManager.OnTick -= OnTurn;
+        GameManager.Instance.TurnManager.OnEnemyTurn -= OnTurn;
+        GameManager.Instance.BoardManager.AmountOfEnemies--;
     }
 
     public override void Init(Vector2Int cell)
@@ -53,10 +54,8 @@ public class EnemyObject : CellObject
 
             GameManager.Instance.UpdateFood(-3);
             
-            return;
         }
-
-        if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
+        else if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
         {
             if (!TryMoveInX(xDistance))
             {
@@ -69,6 +68,12 @@ public class EnemyObject : CellObject
             {
                 TryMoveInX(xDistance);
             }
+        }
+
+        GameManager.Instance.TurnManager.EnemyActions--;
+        if (GameManager.Instance.TurnManager.EnemyActions <= 0)
+        {
+            GameManager.Instance.TurnManager.Tick();
         }
     }
 

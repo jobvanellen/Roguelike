@@ -6,12 +6,23 @@ public class EnemyObject : CellObject
 
     private int m_HP;
 
+
+    private void Awake()
+    {
+        GameManager.Instance.TurnManager.OnTick += OnTurn;
+    }
+    private void OnDestroy()
+    {
+        GameManager.Instance.TurnManager.OnTick -= OnTurn;
+    }
+
     public override void Init(Vector2Int cell)
     {
         base.Init(cell);
         m_HP = maxHP;
-
     }
+
+
     public override bool PlayerWantsToEnter()
     {
         GameManager.Instance.PlayerController.Attack();
@@ -27,6 +38,66 @@ public class EnemyObject : CellObject
 
     public void OnTurn()
     {
+        var playerCell = GameManager.Instance.PlayerController.GetCellPosition();
+        int xDistance = m_Cell.x - playerCell.x;
+        int yDistance = m_Cell.y - playerCell.y;
 
+        if(xDistance == 0 && Mathf.Abs(yDistance) == 1 ||
+            yDistance == 0 && Mathf.Abs(xDistance) == 1)
+        {
+            GameManager.Instance.UpdateFood(-3);
+            return;
+        }
+
+        if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
+        {
+            if (!TryMoveInX(xDistance))
+            {
+                TryMoveInY(yDistance);
+            }
+        }
+        else
+        {
+            if (!TryMoveInY(yDistance))
+            {
+                TryMoveInX(xDistance);
+            }
+        }
     }
+
+    private bool TryMoveInX(int dist)
+    { 
+        return dist > 0 ? MoveTo(m_Cell + Vector2Int.left) : MoveTo(m_Cell + Vector2Int.right);
+    }
+
+    private bool TryMoveInY(int dist)
+    {
+        return dist > 0 ? MoveTo(m_Cell + Vector2Int.down) : MoveTo(m_Cell + Vector2Int.up);
+    }
+
+    private bool MoveTo(Vector2Int coord)
+    {
+        var board = GameManager.Instance.BoardManager;
+        var targetCell = board.GetCellData(coord);
+
+        if (targetCell == null
+            || !targetCell.isPassable
+            || targetCell.ContainedObject != null)
+        {
+            return false;
+        }
+
+        //remove enemy from current cell
+        var currentCell = board.GetCellData(m_Cell);
+        currentCell.ContainedObject = null;
+
+        //add it to the next cell
+        targetCell.ContainedObject = this;
+        m_Cell = coord;
+        transform.position = board.CellToWorld(coord);
+
+        return true;
+    }
+
+
 }

@@ -136,4 +136,9 @@ public class PlayerController : MonoBehaviour
     {
         m_Animator.SetTrigger("Attack");    
     }
+
+    public Vector2Int GetCellPosition()
+    {
+        return m_CellPosition;
+    }
 }

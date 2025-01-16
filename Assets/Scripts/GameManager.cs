@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     public void UpdateFood(int amount)
     {
         m_FoodAmount += amount;
-        m_FoodLabel.text = "Food : " + m_FoodAmount;
+        m_FoodLabel.text = "Food : " + (m_FoodAmount < 0 ? "0" : m_FoodAmount) ;
 
         if (m_FoodAmount <= 0)
         {

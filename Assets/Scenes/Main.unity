@@ -689,6 +689,7 @@ MonoBehaviour:
   - {fileID: 4981029249899752550, guid: 038e1d3a8dd8dc24eaeefe1f41d57db2, type: 3}
   - {fileID: 4981029249899752550, guid: 77527a57a5211804fb38d6f0f97ced27, type: 3}
   - {fileID: 4981029249899752550, guid: a12652fce5eb31149829299a3e51a2f0, type: 3}
+  EnemyPrefab: {fileID: 2787977630920958521, guid: c0823af3d731ef440be769d1841fce69, type: 3}
 --- !u!156049354 &1967485097
 Grid:
   m_ObjectHideFlags: 0

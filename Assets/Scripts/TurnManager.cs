@@ -27,7 +27,7 @@ public class TurnManager
         PlayerTurn = GameManager.Instance.BoardManager.AmountOfEnemies <= 0 || !PlayerTurn;
 
         Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
-        if (PlayerTurn)
+        if(PlayerTurn)
         {
             OnPlayerTurn?.Invoke();
         }

@@ -41,9 +41,12 @@ public class PlayerController : MonoBehaviour
         if (m_isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, m_TargetPosition, MoveSpeed * Time.deltaTime);
-            checkPickup();
+            if (transform.position == m_TargetPosition)
+            {
+                m_isMoving = false;
+                checkPickup();
+            }
         }
-
 
         Vector2Int newCellTarget = m_CellPosition;
         bool hasMoved = false;
@@ -108,14 +111,10 @@ public class PlayerController : MonoBehaviour
 
     public void checkPickup()
     {
-        if (transform.position == m_TargetPosition)
+        var cellData = m_Board.GetCellData(m_CellPosition);
+        if (cellData.ContainedObject != null)
         {
-            m_isMoving = false;
-            var cellData = m_Board.GetCellData(m_CellPosition);
-            if (cellData.ContainedObject != null)
-            {
-                cellData.ContainedObject.PlayerEntered();
-            }
+            cellData.ContainedObject.PlayerEntered();
         }
     }
 

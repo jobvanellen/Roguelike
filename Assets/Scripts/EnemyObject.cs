@@ -26,7 +26,6 @@ public class EnemyObject : CellObject
         m_HP = maxHP;
     }
 
-
     public override bool PlayerWantsToEnter()
     {
         GameManager.Instance.PlayerController.Attack();
@@ -39,7 +38,6 @@ public class EnemyObject : CellObject
         }
         return false;
     }
-
     public void OnTurn()
     {
         var playerCell = GameManager.Instance.PlayerController.GetCellPosition();
@@ -69,12 +67,7 @@ public class EnemyObject : CellObject
                 TryMoveInX(xDistance);
             }
         }
-
         GameManager.Instance.TurnManager.EnemyActions--;
-        if (GameManager.Instance.TurnManager.EnemyActions <= 0)
-        {
-            GameManager.Instance.TurnManager.Tick();
-        }
     }
 
     private bool TryMoveInX(int dist)

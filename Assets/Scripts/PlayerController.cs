@@ -44,11 +44,11 @@ public class PlayerController : MonoBehaviour
             checkPickup();
         }
 
+
+        Vector2Int newCellTarget = m_CellPosition;
+        bool hasMoved = false;
         if (GameManager.Instance.TurnManager.PlayerTurn)
         {
-            Vector2Int newCellTarget = m_CellPosition;
-            bool hasMoved = false;
-
             if (Keyboard.current.wKey.wasPressedThisFrame)
             {
                 newCellTarget.y += 1;
@@ -69,29 +69,34 @@ public class PlayerController : MonoBehaviour
                 newCellTarget.x += 1;
                 hasMoved = true;
             }
+        }
+        else if(GameManager.Instance.TurnManager.EnemyActions <= 0)
+        {
+            GameManager.Instance.TurnManager.Tick();
+        }
 
-            if (hasMoved)
+        if (hasMoved)
+        {
+            if (m_isMoving)
             {
-                if (m_isMoving)
+                MoveDirectlyTo(new Vector2Int((int)m_TargetPosition.x, (int)m_TargetPosition.y));
+            }
+            BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
+
+            if (cellData != null && cellData.isPassable)
+            {
+                GameManager.Instance.TurnManager.Tick();
+
+                if (cellData.ContainedObject == null)
                 {
-                    MoveDirectlyTo(new Vector2Int((int)m_TargetPosition.x, (int)m_TargetPosition.y));
+                    MoveSmoothlyTo(newCellTarget);
                 }
-                BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
-
-                if (cellData != null && cellData.isPassable)
+                else if (cellData.ContainedObject.PlayerWantsToEnter())
                 {
-                    GameManager.Instance.TurnManager.Tick();
-
-                    if (cellData.ContainedObject == null)
-                    {
-                        MoveSmoothlyTo(newCellTarget);
-                    }
-                    else if (cellData.ContainedObject.PlayerWantsToEnter())
-                    {
-                        MoveSmoothlyTo(newCellTarget);
-                    }
+                    MoveSmoothlyTo(newCellTarget);
                 }
             }
+            
         }
     }
 

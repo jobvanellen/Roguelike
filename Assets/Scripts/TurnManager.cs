@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class TurnManager
@@ -25,10 +24,10 @@ public class TurnManager
     public void Tick()
     {
         m_turnCount++;
-        PlayerTurn = GameManager.Instance.BoardManager.AmountOfEnemies > 0 ? !PlayerTurn : true;
+        PlayerTurn = GameManager.Instance.BoardManager.AmountOfEnemies <= 0 || !PlayerTurn;
 
         Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
-        if(PlayerTurn)
+        if (PlayerTurn)
         {
             OnPlayerTurn?.Invoke();
         }

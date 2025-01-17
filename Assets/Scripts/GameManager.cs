@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private Label m_FoodLabel;
 
     private int m_CurrentLevel = 1;
+    private Label m_LevelLabel;
 
     private VisualElement m_GameOverPanel;
     private Label m_GameOverLabel;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         TurnManager.OnPlayerTurn += OnPLayerTurnHappen;
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
+        m_LevelLabel = UIDoc.rootVisualElement.Q<Label>("LevelLabel");
 
         StartNewGame();
     }
@@ -50,23 +52,19 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel.style.visibility = Visibility.Hidden;
         m_FoodAmount = InitialFood;
         m_FoodLabel.text = "Food : " + m_FoodAmount;
-        m_CurrentLevel = 1;
-
-        BoardManager.ClearLevel();
-        BoardManager.Init();
-
+        m_CurrentLevel = 0;
         PlayerController.Init();
-        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+        NewLevel();
     }
 
     public void NewLevel()
     {
         BoardManager.ClearLevel();
         BoardManager.Init();
-        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
         TurnManager.Init();
-
+        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
         m_CurrentLevel++;
+        m_LevelLabel.text = "Level : " + m_CurrentLevel;
     }
 
     void OnPLayerTurnHappen()
@@ -83,8 +81,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerController.GameOver();
             m_GameOverPanel.style.visibility = Visibility.Visible;
-            int finishedLevels = m_CurrentLevel - 1;
-            m_GameOverLabel.text = "Game Over\n\nYou traveled through " + finishedLevels + " level" + (finishedLevels == 1 ? "" : "s") + "\n\nPress ENTER to restart";
+            m_GameOverLabel.text = "Game Over\n\nYou traveled through " + m_CurrentLevel + " level" + (m_CurrentLevel == 1 ? "" : "s") + "\n\nPress ENTER to restart";
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 public class EnemyObject : CellObject
 {
     public int maxHP;
-    public int MoveSpeed;
+    public float MoveSpeed;
 
     private int m_HP;
 
@@ -50,6 +50,7 @@ public class EnemyObject : CellObject
             {
                 m_IsMoving = false;
                 m_DoAction = false;
+                m_animator.SetBool("Walk", false);
                 GameManager.Instance.TurnManager.Tick();
             }
         }
@@ -147,9 +148,9 @@ public class EnemyObject : CellObject
 
     private void MoveSmoothlyTo(Vector2Int cell)
     {
+        m_animator.SetBool("Walk", true);
         m_IsMoving = true;
         m_Cell = cell;
-
         m_TargetPosition = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
 

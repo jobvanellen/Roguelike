@@ -13,6 +13,7 @@ public class EnemyObject : CellObject
     {
         GameManager.Instance.TurnManager.OnEnemyTurn += OnTurn;
         m_animator = GetComponent<Animator>();
+        GameManager.Instance.BoardManager.AmountOfEnemies++;
     }
     private void OnDestroy()
     {
@@ -68,6 +69,7 @@ public class EnemyObject : CellObject
             }
         }
         GameManager.Instance.TurnManager.EnemyActions--;
+        Debug.Log("Enemy Actions: " + GameManager.Instance.TurnManager.EnemyActions);
     }
 
     private bool TryMoveInX(int dist)

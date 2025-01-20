@@ -26,14 +26,17 @@ public class TurnManager
         m_turnCount++;
         PlayerTurn = GameManager.Instance.BoardManager.AmountOfEnemies <= 0 || !PlayerTurn;
 
-        Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
+        //Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
         if(PlayerTurn)
         {
             OnPlayerTurn?.Invoke();
         }
         else
         {
+            Debug.Log("Amount of enemies: " + GameManager.Instance.BoardManager.AmountOfEnemies);
             EnemyActions = GameManager.Instance.BoardManager.AmountOfEnemies;
+            Debug.Log("Enemy Actions: " + EnemyActions);
+
             OnEnemyTurn?.Invoke();
         }
     }

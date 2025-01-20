@@ -70,9 +70,7 @@ public class BoardManager : MonoBehaviour
 
         GenerateObjects(WallPrefabs, Random.Range(6, 10));
         GenerateObjects(FoodPrefabs, Random.Range(2, 6));
-
-        AmountOfEnemies = Random.Range(1, 4);
-        GenerateObjects(new List<CellObject> { EnemyPrefab }, AmountOfEnemies);
+        GenerateObjects(new List<CellObject> { EnemyPrefab }, Random.Range(1, 4));
     }
 
     public Vector3 CellToWorld(Vector2Int cell)

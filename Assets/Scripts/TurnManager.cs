@@ -19,6 +19,7 @@ public class TurnManager
 
     public void Init()
     {
+        AmountOfEnemies = 0;
         PlayerTurn = true;
     }
 
@@ -28,23 +29,18 @@ public class TurnManager
         {
             EnemyActions++;
             Debug.Log("Enemy Actions: " + EnemyActions);
-            Debug.Log("Amount of Enemies: " + AmountOfEnemies);
+            //Debug.Log("Amount of Enemies: " + AmountOfEnemies);
             if (EnemyActions < AmountOfEnemies)
-            { 
+            {
                 return;
             }
-            PlayerTurn = true;
         }
-        else if(PlayerTurn)
-        {
-            PlayerTurn = AmountOfEnemies <= 0;
-        }
-        
+
+        PlayerTurn = AmountOfEnemies <= 0 || !PlayerTurn;
         m_turnCount++;
         EnemyActions = 0;
 
-
-        //Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
+        Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
         if (PlayerTurn)
         {
             OnPlayerTurn?.Invoke();

@@ -60,9 +60,11 @@ public class GameManager : MonoBehaviour
     public void NewLevel()
     {
         BoardManager.ClearLevel();
-        BoardManager.Init();
+
         TurnManager.Init();
+        BoardManager.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+
         m_CurrentLevel++;
         m_LevelLabel.text = "Level : " + m_CurrentLevel;
     }

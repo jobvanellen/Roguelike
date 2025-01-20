@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
             {
                 m_isMoving = false;
                 checkPickup();
+                GameManager.Instance.TurnManager.Tick();
             }
         }
 
@@ -84,8 +85,6 @@ public class PlayerController : MonoBehaviour
 
             if (cellData != null && cellData.isPassable)
             {
-                GameManager.Instance.TurnManager.Tick();
-
                 if (cellData.ContainedObject == null)
                 {
                     MoveSmoothlyTo(newCellTarget);
@@ -93,6 +92,10 @@ public class PlayerController : MonoBehaviour
                 else if (cellData.ContainedObject.PlayerWantsToEnter())
                 {
                     MoveSmoothlyTo(newCellTarget);
+                }
+                else
+                {
+                    GameManager.Instance.TurnManager.Tick();
                 }
             }
         }

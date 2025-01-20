@@ -28,8 +28,6 @@ public class EnemyObject : CellObject
     private void OnDestroy()
     {
         GameManager.Instance.TurnManager.OnEnemyTurn -= OnTurn;
-        GameManager.Instance.TurnManager.AmountOfEnemies--;
-        GameManager.Instance.TurnManager.Tick();
     }
 
     public override void Init(Vector2Int cell)
@@ -58,11 +56,10 @@ public class EnemyObject : CellObject
         else if (m_Attack)
         {
             m_animator.SetTrigger("Attack");
-            GameManager.Instance.PlayerController.GetHit();
-
             GameManager.Instance.UpdateFood(-3);
             m_DoAction = false;
             m_Attack = false;
+            GameManager.Instance.PlayerController.GetHit();
             GameManager.Instance.TurnManager.Tick();
         }
         else if (m_DoAction)
@@ -75,20 +72,19 @@ public class EnemyObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         GameManager.Instance.PlayerController.Attack();
-        Debug.Log("Player Attacks");
 
         m_HP--;
 
         if (m_HP <= 0)
         {
-            Debug.Log("Enemy kiled");
+            Debug.Log("Enemy killed");
+            GameManager.Instance.TurnManager.AmountOfEnemies--;
             Destroy(gameObject);
         }
         return false;
     }
     public void OnTurn()
     {
-        Debug.Log("Enemy Turn starts");
         m_DoAction = true;
 
         var playerCell = GameManager.Instance.PlayerController.GetCellPosition();

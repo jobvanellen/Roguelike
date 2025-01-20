@@ -6,11 +6,10 @@ public class TurnManager
     public event System.Action OnEnemyTurn;
     private int m_turnCount;
 
-    public int EnemyActions { get; set; }
-
-    public bool PlayerTurn {  get; private set; }
+    private int EnemyActions;
     public int AmountOfEnemies { get; set; }
 
+    public bool PlayerTurn {  get; private set; }
 
     public TurnManager()
     {
@@ -25,20 +24,33 @@ public class TurnManager
 
     public void Tick()
     {
+        if (!PlayerTurn)
+        {
+            EnemyActions++;
+            Debug.Log("Enemy Actions: " + EnemyActions);
+            Debug.Log("Amount of Enemies: " + AmountOfEnemies);
+            if (EnemyActions < AmountOfEnemies)
+            { 
+                return;
+            }
+            PlayerTurn = true;
+        }
+        else if(PlayerTurn)
+        {
+            PlayerTurn = AmountOfEnemies <= 0;
+        }
+        
         m_turnCount++;
-        PlayerTurn = AmountOfEnemies <= 0 || !PlayerTurn;
+        EnemyActions = 0;
+
 
         //Debug.Log("Turn " + m_turnCount + ", " + (PlayerTurn ? "Player" : "Enemy"));
-        if(PlayerTurn)
+        if (PlayerTurn)
         {
             OnPlayerTurn?.Invoke();
         }
         else
         {
-            Debug.Log("Amount of enemies: " + AmountOfEnemies);
-            EnemyActions = AmountOfEnemies;
-            Debug.Log("Enemy Actions: " + EnemyActions);
-
             OnEnemyTurn?.Invoke();
         }
     }

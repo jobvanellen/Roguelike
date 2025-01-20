@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 2
+  MoveSpeed: 5
 --- !u!95 &6778127013480537091
 Animator:
   serializedVersion: 7

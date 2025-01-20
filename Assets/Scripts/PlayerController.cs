@@ -73,10 +73,6 @@ public class PlayerController : MonoBehaviour
                 hasMoved = true;
             }
         }
-        else if(GameManager.Instance.TurnManager.EnemyActions <= 0)
-        {
-            GameManager.Instance.TurnManager.Tick();
-        }
 
         if (hasMoved)
         {
@@ -117,7 +113,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void MoveSmoothlyTo(Vector2Int cell)
+    private void MoveSmoothlyTo(Vector2Int cell)
     {
         m_CellPosition = cell;
 
@@ -125,7 +121,7 @@ public class PlayerController : MonoBehaviour
         m_TargetPosition = m_Board.CellToWorld(cell);
     }
 
-    public void MoveDirectlyTo(Vector2Int cell)
+    private void MoveDirectlyTo(Vector2Int cell)
     {
         m_CellPosition = cell;
         transform.position = m_Board.CellToWorld(cell);

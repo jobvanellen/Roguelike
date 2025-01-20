@@ -1,24 +1,35 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EnemyObject : CellObject
 {
     public int maxHP;
+    public int MoveSpeed;
 
     private int m_HP;
 
     private Animator m_animator;
 
+    private bool m_DoAction = false;
+    private bool m_IsMoving = false;
+    private bool m_Attack = false;
+
+    private Vector3 m_TargetPosition;
+
+ 
 
     private void Awake()
     {
         GameManager.Instance.TurnManager.OnEnemyTurn += OnTurn;
-        m_animator = GetComponent<Animator>();
         GameManager.Instance.TurnManager.AmountOfEnemies++;
+        m_animator = GetComponent<Animator>();
     }
     private void OnDestroy()
     {
         GameManager.Instance.TurnManager.OnEnemyTurn -= OnTurn;
         GameManager.Instance.TurnManager.AmountOfEnemies--;
+        GameManager.Instance.TurnManager.Tick();
     }
 
     public override void Init(Vector2Int cell)
@@ -27,20 +38,59 @@ public class EnemyObject : CellObject
         m_HP = maxHP;
     }
 
+    private void Update()
+    {
+        if(GameManager.Instance.TurnManager.PlayerTurn || !m_DoAction)
+        {
+            return;
+        }
+
+        if (m_IsMoving)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, m_TargetPosition, MoveSpeed * Time.deltaTime);
+            if (transform.position == m_TargetPosition)
+            {
+                m_IsMoving = false;
+                m_DoAction = false;
+                GameManager.Instance.TurnManager.Tick();
+            }
+        }
+        else if (m_Attack)
+        {
+            m_animator.SetTrigger("Attack");
+            GameManager.Instance.PlayerController.GetHit();
+
+            GameManager.Instance.UpdateFood(-3);
+            m_DoAction = false;
+            m_Attack = false;
+            GameManager.Instance.TurnManager.Tick();
+        }
+        else if (m_DoAction)
+        {
+            // if Enemy can do an action but no specific action was selected, turn is skipped
+            m_DoAction = false;
+            GameManager.Instance.TurnManager.Tick();
+        }
+    }
     public override bool PlayerWantsToEnter()
     {
         GameManager.Instance.PlayerController.Attack();
+        Debug.Log("Player Attacks");
 
         m_HP--;
 
         if (m_HP <= 0)
         {
+            Debug.Log("Enemy kiled");
             Destroy(gameObject);
         }
         return false;
     }
     public void OnTurn()
     {
+        Debug.Log("Enemy Turn starts");
+        m_DoAction = true;
+
         var playerCell = GameManager.Instance.PlayerController.GetCellPosition();
         int xDistance = m_Cell.x - playerCell.x;
         int yDistance = m_Cell.y - playerCell.y;
@@ -48,11 +98,8 @@ public class EnemyObject : CellObject
         if(xDistance == 0 && Mathf.Abs(yDistance) == 1 ||
             yDistance == 0 && Mathf.Abs(xDistance) == 1)
         {
-            m_animator.SetTrigger("Attack");
-            GameManager.Instance.PlayerController.GetHit();
+            m_Attack = true;
 
-            GameManager.Instance.UpdateFood(-3);
-            
         }
         else if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
         {
@@ -68,8 +115,6 @@ public class EnemyObject : CellObject
                 TryMoveInX(xDistance);
             }
         }
-        GameManager.Instance.TurnManager.EnemyActions--;
-        Debug.Log("Enemy Actions: " + GameManager.Instance.TurnManager.EnemyActions);
     }
 
     private bool TryMoveInX(int dist)
@@ -82,29 +127,34 @@ public class EnemyObject : CellObject
         return dist > 0 ? MoveTo(m_Cell + Vector2Int.down) : MoveTo(m_Cell + Vector2Int.up);
     }
 
-    private bool MoveTo(Vector2Int coord)
+    private bool MoveTo(Vector2Int cell)
     {
         var board = GameManager.Instance.BoardManager;
-        var targetCell = board.GetCellData(coord);
+        var newCellData = board.GetCellData(cell);
 
-        if (targetCell == null
-            || !targetCell.isPassable
-            || targetCell.ContainedObject != null)
+        if (newCellData == null
+            || !newCellData.isPassable
+            || newCellData.ContainedObject != null)
         {
             return false;
         }
 
-        //remove enemy from current cell
-        var currentCell = board.GetCellData(m_Cell);
-        currentCell.ContainedObject = null;
+        var currentCellData = board.GetCellData(m_Cell);
+        currentCellData.ContainedObject = null;
 
-        //add it to the next cell
-        targetCell.ContainedObject = this;
-        m_Cell = coord;
-        transform.position = board.CellToWorld(coord);
+        newCellData.ContainedObject = this;
+
+        MoveSmoothlyTo(cell);
 
         return true;
     }
 
+    private void MoveSmoothlyTo(Vector2Int cell)
+    {
+        m_IsMoving = true;
+        m_Cell = cell;
+
+        m_TargetPosition = GameManager.Instance.BoardManager.CellToWorld(cell);
+    }
 
 }

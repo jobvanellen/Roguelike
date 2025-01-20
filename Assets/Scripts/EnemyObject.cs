@@ -13,12 +13,12 @@ public class EnemyObject : CellObject
     {
         GameManager.Instance.TurnManager.OnEnemyTurn += OnTurn;
         m_animator = GetComponent<Animator>();
-        GameManager.Instance.BoardManager.AmountOfEnemies++;
+        GameManager.Instance.TurnManager.AmountOfEnemies++;
     }
     private void OnDestroy()
     {
         GameManager.Instance.TurnManager.OnEnemyTurn -= OnTurn;
-        GameManager.Instance.BoardManager.AmountOfEnemies--;
+        GameManager.Instance.TurnManager.AmountOfEnemies--;
     }
 
     public override void Init(Vector2Int cell)

@@ -27,7 +27,6 @@ public class BoardManager : MonoBehaviour
     public List<CellObject> WallPrefabs;
     public CellObject EnemyPrefab;
 
-    public int AmountOfEnemies { get; set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()

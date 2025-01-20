@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviour
             if (transform.position == m_TargetPosition)
             {
                 m_isMoving = false;
-                checkPickup();
                 GameManager.Instance.TurnManager.Tick();
+                checkPickup();
             }
         }
 

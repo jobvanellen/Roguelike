@@ -14,13 +14,13 @@ public class TurnManager
     public TurnManager()
     {
         m_turnCount = 1;
-        Init();
     }
 
     public void Init()
     {
         AmountOfEnemies = 0;
         PlayerTurn = true;
+        Debug.Log("Turnmanager Initialized");
     }
 
     public void Tick()
@@ -29,7 +29,6 @@ public class TurnManager
         {
             EnemyActions++;
             Debug.Log("Enemy Actions: " + EnemyActions);
-            //Debug.Log("Amount of Enemies: " + AmountOfEnemies);
             if (EnemyActions < AmountOfEnemies)
             {
                 return;

@@ -37,41 +37,54 @@ public class BoardManager : MonoBehaviour
         m_EmptyCells = new List<Vector2Int>();
         m_BoardData = new CellData[Width, Height];
 
-
         for (int y = 0; y < Height; ++y)
         {
             for (int x = 0; x < Width; ++x)
             {
-                Tile tile;
-                m_BoardData[x, y] = new CellData();
+                DrawBoardTile(x, y);
+                InitializeCellData(x, y);
 
-                if (x == 0 || y == 0 || x == Width - 1 || y == Height - 1)
+                if (!IsEdgeTile(x, y))
                 {
-                    tile = BlockingTiles[Random.Range(0, BlockingTiles.Length)];
-                    m_BoardData[x, y].isPassable = false;
-                }
-                else
-                {
-                    tile = GroundTiles[Random.Range(0, GroundTiles.Length)];
-                    m_BoardData[x, y].isPassable = true;
                     m_EmptyCells.Add(new Vector2Int(x, y));
                 }
-
-                m_TileMap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
 
-        m_EmptyCells.Remove(new Vector2Int(1, 1));
+        m_EmptyCells.Remove(new Vector2Int(1, 1)); // player location
 
-        Vector2Int endCoord = new Vector2Int(Width - 2, Height - 2);
-        AddObject(Instantiate(Exit), endCoord);
-        m_EmptyCells.Remove(endCoord);
+        AddEndCellObject(new Vector2Int(Width - 2, Height - 2));
 
         GenerateObjects(WallPrefabs, Random.Range(6, 10));
         GenerateObjects(FoodPrefabs, Random.Range(2, 6));
         GenerateObjects(new List<CellObject> { EnemyPrefab }, Random.Range(1, 4));
     }
 
+    private void DrawBoardTile(int x, int y)
+    {
+        var blockingTile = BlockingTiles[Random.Range(0, BlockingTiles.Length)];
+        var groundTile = GroundTiles[Random.Range(0, GroundTiles.Length)];
+        Tile tile = IsEdgeTile(x, y) ? blockingTile : groundTile;
+        m_TileMap.SetTile(new Vector3Int(x, y, 0), tile);
+    }
+
+    private void InitializeCellData(int x, int y)
+    {
+        CellData cellData = new CellData();
+        cellData.isPassable = !IsEdgeTile(x, y);
+        m_BoardData[x, y] = cellData;
+    }
+
+    private void AddEndCellObject(Vector2Int endCoord)
+    {
+        AddObject(Instantiate(Exit), endCoord);
+        m_EmptyCells.Remove(endCoord);
+    }
+
+    private bool IsEdgeTile(int x, int y)
+    {
+        return x == 0 || y == 0 || x == Width - 1 || y == Height - 1;
+    }
     public Vector3 CellToWorld(Vector2Int cell)
     {
         return m_Grid.GetCellCenterWorld(new Vector3Int(cell.x, cell.y, 0));
@@ -85,8 +98,7 @@ public class BoardManager : MonoBehaviour
         }
         return m_BoardData[cell.x, cell.y];
     }
-
-
+    
     public void GenerateObjects(List<CellObject> objectList, int amount)
     {
         for (int i = 0; i < amount; ++i)
@@ -128,13 +140,18 @@ public class BoardManager : MonoBehaviour
         {
             for (int x = 0; x < Width; ++x)
             {
-                var cellData = m_BoardData[x, y];
-                if(cellData.ContainedObject != null)
-                {
-                    Destroy(cellData.ContainedObject.gameObject);
-                }
-                SetCellTile(new Vector2Int(x, y), null);
+                ClearCell(x, y);
             }
         }
+    }
+
+    private void ClearCell(int x, int y)
+    {
+        var cellData = m_BoardData[x, y];
+        if (cellData.ContainedObject != null)
+        {
+            Destroy(cellData.ContainedObject.gameObject);
+        }
+        SetCellTile(new Vector2Int(x, y), null);
     }
 }

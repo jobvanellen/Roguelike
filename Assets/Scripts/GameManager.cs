@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         m_GameOverLabel = m_GameOverPanel.Q<Label>("GameOverMessage");
 
         TurnManager = new TurnManager();
-        TurnManager.OnPlayerTurn += OnPLayerTurnHappen;
+        TurnManager.OnPlayerTurn += OnPlayerTurnHappen;
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
         m_LevelLabel = UIDoc.rootVisualElement.Q<Label>("LevelLabel");
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         m_LevelLabel.text = "Level : " + m_CurrentLevel;
     }
 
-    void OnPLayerTurnHappen()
+    void OnPlayerTurnHappen()
     {
         UpdateFood(-1);
     }

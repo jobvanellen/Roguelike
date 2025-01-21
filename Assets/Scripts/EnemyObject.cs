@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -92,11 +93,9 @@ public class EnemyObject : CellObject
         int xDistance = m_Cell.x - playerCell.x;
         int yDistance = m_Cell.y - playerCell.y;
 
-        if(xDistance == 0 && Mathf.Abs(yDistance) == 1 ||
-            yDistance == 0 && Mathf.Abs(xDistance) == 1)
+        if(NextToPlayer(playerCell))
         {
             m_Attack = true;
-
         }
         else if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
         {
@@ -112,6 +111,14 @@ public class EnemyObject : CellObject
                 TryMoveInX(xDistance);
             }
         }
+    }
+
+    private bool NextToPlayer(Vector2Int playerCell)
+    {
+        return playerCell == m_Cell + Vector2Int.up ||
+               playerCell == m_Cell + Vector2Int.down ||
+               playerCell == m_Cell + Vector2Int.left ||
+               playerCell == m_Cell + Vector2Int.right;
     }
 
     private bool TryMoveInX(int dist)

@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
         MoveRight.Enable();
         MoveUp.Enable();
         MoveDown.Enable();
+        GameManager.Instance.TurnManager.OnPlayerTurn += StartTurn;
     }
 
     private void OnDestroy()
@@ -39,7 +40,6 @@ public class PlayerController : MonoBehaviour
 
     public void Init()
     {
-        GameManager.Instance.TurnManager.OnPlayerTurn += StartTurn;
         m_GameOver = false;
         m_isMoving = false;
     }

@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public BoardManager BoardManager;
+    public TurnManager TurnManager { get; private set; }
     public PlayerController PlayerController;
 
-    public TurnManager TurnManager { get; private set; }
 
     public int InitialFood;
     private int m_FoodAmount;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        TurnManager = new TurnManager();
     }
 
     void Start()
@@ -38,7 +39,6 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel = UIDoc.rootVisualElement.Q<VisualElement>("GameOverPanel");
         m_GameOverLabel = m_GameOverPanel.Q<Label>("GameOverMessage");
 
-        TurnManager = new TurnManager();
         TurnManager.OnPlayerTurn += OnPlayerTurnHappen;
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");

@@ -20,6 +20,7 @@ public class TurnManager
     {
         AmountOfEnemies = 0;
         PlayerTurn = true;
+        OnPlayerTurn.Invoke();
         Debug.Log("Turnmanager Initialized");
     }
 

@@ -11,17 +11,35 @@ public class PlayerController : MonoBehaviour
     private bool m_isMoving;
     private Vector3 m_TargetPosition;
 
+
+    public InputAction MoveLeft;
+    public InputAction MoveRight;
+    public InputAction MoveUp;
+    public InputAction MoveDown;
+
     public float MoveSpeed = 5.0f;
 
     private Animator m_Animator;
+    private bool m_HasMovedThisTurn = false;
+
 
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
+        MoveLeft.Enable();
+        MoveRight.Enable();
+        MoveUp.Enable();
+        MoveDown.Enable();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.TurnManager.OnPlayerTurn -= StartTurn;
     }
 
     public void Init()
     {
+        GameManager.Instance.TurnManager.OnPlayerTurn += StartTurn;
         m_GameOver = false;
         m_isMoving = false;
     }
@@ -49,20 +67,22 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        HandlePlayerInput();
+        if(!m_HasMovedThisTurn)
+        {
+            HandlePlayerInput();
+        }
     }
 
     private void HandlePlayerInput()
     {
         Vector2Int newCellTarget = m_CellPosition;
-        bool hasMoved = false;
         if (GameManager.Instance.TurnManager.PlayerTurn)
         {
             newCellTarget += InputToMoveDirection();
-            hasMoved = newCellTarget != m_CellPosition;
+            m_HasMovedThisTurn = newCellTarget != m_CellPosition;
         }
 
-        if (hasMoved)
+        if (m_HasMovedThisTurn)
         {
             ProcessPlayerMovement(newCellTarget);
         }
@@ -70,19 +90,19 @@ public class PlayerController : MonoBehaviour
 
     private Vector2Int InputToMoveDirection()
     {
-        if (Keyboard.current.wKey.wasPressedThisFrame)
+        if (MoveUp.WasPressedThisFrame())
         {
             return Vector2Int.up;
         }
-        else if (Keyboard.current.sKey.wasPressedThisFrame)
+        else if (MoveDown.WasPressedThisFrame())
         {
             return Vector2Int.down;
         }
-        else if (Keyboard.current.aKey.wasPressedThisFrame)
+        else if (MoveLeft.WasPressedThisFrame())
         {
             return Vector2Int.left;
         }
-        else if (Keyboard.current.dKey.wasPressedThisFrame)
+        else if (MoveRight.WasPressedThisFrame())
         {
             return Vector2Int.right;
         }
@@ -116,6 +136,15 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.TurnManager.Tick();
             }
         }
+        else
+        {
+            m_HasMovedThisTurn = false;
+        }
+    }
+
+    private void StartTurn()
+    {
+        m_HasMovedThisTurn = false;
     }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)

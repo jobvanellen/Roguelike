@@ -87,7 +87,6 @@ public class GameManager : MonoBehaviour
 
     private void IndicateFoodChange(int amount)
     {
-        Debug.Log("Instantiating food indicator");
         GameObject foodUpdate = Instantiate(FoodUpdatePrefab, PlayerController.transform);
 
         var textMeshPro = foodUpdate.transform.GetChild(0).GetComponent<TextMeshPro>();

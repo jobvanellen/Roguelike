@@ -122,12 +122,20 @@ public class EnemyObject : CellObject
     }
 
     private bool TryMoveInX(int dist)
-    { 
+    {
+        if (dist == 0)
+        {
+            return false;
+        }
         return dist > 0 ? MoveTo(m_Cell + Vector2Int.left) : MoveTo(m_Cell + Vector2Int.right);
     }
 
     private bool TryMoveInY(int dist)
     {
+        if (dist == 0)
+        {
+            return false;
+        }
         return dist > 0 ? MoveTo(m_Cell + Vector2Int.down) : MoveTo(m_Cell + Vector2Int.up);
     }
 

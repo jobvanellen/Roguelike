@@ -89,10 +89,10 @@ public class PlayerController : MonoBehaviour
         {
             if (SkipTurn.WasPressedThisFrame())
             {
-                Debug.Log("Skip Player Turn");
                 GameManager.Instance.TurnManager.Tick();
                 return;
             }
+
             newCellTarget += InputToMoveDirection();
             m_HasMovedThisTurn = newCellTarget != m_CellPosition;
         }

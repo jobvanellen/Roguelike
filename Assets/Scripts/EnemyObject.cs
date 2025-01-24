@@ -7,6 +7,7 @@ public class EnemyObject : CellObject
 {
     public int maxHP;
     public float MoveSpeed;
+    public int AttackDamage;
 
     private int m_HP;
 
@@ -58,7 +59,7 @@ public class EnemyObject : CellObject
         else if (m_Attack)
         {
             m_animator.SetTrigger("Attack");
-            GameManager.Instance.UpdateFood(-3);
+            GameManager.Instance.UpdateFood(AttackDamage * -1);
             m_DoAction = false;
             m_Attack = false;
             GameManager.Instance.PlayerController.GetHit();
@@ -79,7 +80,6 @@ public class EnemyObject : CellObject
 
         if (m_HP <= 0)
         {
-            Debug.Log("Enemy killed");
             GameManager.Instance.TurnManager.AmountOfEnemies--;
             Destroy(gameObject);
         }

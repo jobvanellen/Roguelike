@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardManager: {fileID: 1967485096}
   PlayerController: {fileID: 1372654604}
+  FoodUpdatePrefab: {fileID: 6287210519098030750, guid: 535a66e6c5b3540408b8f55481520970, type: 3}
   InitialFood: 50
   UIDoc: {fileID: 600740762}
 --- !u!4 &19981691

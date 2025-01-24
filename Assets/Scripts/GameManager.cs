@@ -1,5 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class GameManager : MonoBehaviour
     public TurnManager TurnManager { get; private set; }
     public PlayerController PlayerController;
 
+    public GameObject FoodUpdatePrefab;
 
     public int InitialFood;
     private int m_FoodAmount;
@@ -39,8 +42,6 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel = UIDoc.rootVisualElement.Q<VisualElement>("GameOverPanel");
         m_GameOverLabel = m_GameOverPanel.Q<Label>("GameOverMessage");
 
-        TurnManager.OnPlayerTurn += OnPlayerTurnHappen;
-
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
         m_LevelLabel = UIDoc.rootVisualElement.Q<Label>("LevelLabel");
 
@@ -69,21 +70,25 @@ public class GameManager : MonoBehaviour
         m_LevelLabel.text = "Level : " + m_CurrentLevel;
     }
 
-    void OnPlayerTurnHappen()
-    {
-        UpdateFood(-1);
-    }
-
     public void UpdateFood(int amount)
     {
+        IndicateFoodChange(amount);
+
         m_FoodAmount += amount;
         m_FoodLabel.text = "Food : " + (m_FoodAmount < 0 ? "0" : m_FoodAmount) ;
 
         if (m_FoodAmount <= 0)
         {
             PlayerController.GameOver();
-            m_GameOverPanel.style.visibility = Visibility.Visible;
             m_GameOverLabel.text = "Game Over\n\nYou traveled through " + m_CurrentLevel + " level" + (m_CurrentLevel == 1 ? "" : "s") + "\n\nPress ENTER to restart";
+            m_GameOverPanel.style.visibility = Visibility.Visible;
         }
+    }
+
+    private void IndicateFoodChange(int amount)
+    {
+        Debug.Log("Instantiating food indicator");
+        GameObject foodUpdate = Instantiate(FoodUpdatePrefab, PlayerController.transform);
+        foodUpdate.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(amount.ToString());
     }
 }

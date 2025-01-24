@@ -1,5 +1,8 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public InputAction MoveDown;
 
     public float MoveSpeed = 5.0f;
+
 
     private Animator m_Animator;
     private bool m_HasMovedThisTurn = false;
@@ -84,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
         if (m_HasMovedThisTurn)
         {
+            GameManager.Instance.UpdateFood(-1);
             ProcessPlayerMovement(newCellTarget);
         }
     }
@@ -192,7 +197,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void GetHit()
-    {
+    { 
         m_Animator.SetTrigger("GetHit");
     }
 }

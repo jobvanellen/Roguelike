@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour
 
         if (m_HasMovedThisTurn)
         {
-            GameManager.Instance.UpdateFood(-1);
             ProcessPlayerMovement(newCellTarget);
         }
     }
@@ -136,8 +135,9 @@ public class PlayerController : MonoBehaviour
 
         if (cellData != null && cellData.isPassable)
         {
+            GameManager.Instance.UpdateFood(-1);
             if (cellData.ContainedObject == null)
-            {
+            { 
                 MoveSmoothlyTo(newCellTarget);
             }
             else if (cellData.ContainedObject.PlayerWantsToEnter())

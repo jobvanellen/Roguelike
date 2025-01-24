@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public InputAction MoveDown;
     public InputAction SkipTurn;
 
+    public InputAction RestartAction;
+
     public float MoveSpeed = 5.0f;
 
 
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
         MoveUp.Enable();
         MoveDown.Enable();
         SkipTurn.Enable();
+        RestartAction.Enable();
         GameManager.Instance.TurnManager.OnPlayerTurn += StartTurn;
     }
 
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         if(m_GameOver)
         {
-            if(Keyboard.current.enterKey.wasPressedThisFrame)
+            if(RestartAction.WasPressedThisFrame())
             {
                 GameManager.Instance.StartNewGame();
             }

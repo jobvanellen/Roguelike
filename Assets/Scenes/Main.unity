@@ -661,6 +661,31 @@ MonoBehaviour:
       m_Action: Skip Turn
       m_Flags: 0
     m_Flags: 0
+  RestartAction:
+    m_Name: Restart
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f3e99480-7a28-45c7-88a5-9af2aa20eda7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: aba5415f-05ce-4c00-b930-063ec689d5ea
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Restart
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 737bcfbe-2dbf-4e13-adcf-674984e09e25
+      m_Path: <Keyboard>/numpadEnter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Restart
+      m_Flags: 0
+    m_Flags: 0
   MoveSpeed: 5
 --- !u!212 &1372654605
 SpriteRenderer:

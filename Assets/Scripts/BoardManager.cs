@@ -27,8 +27,6 @@ public class BoardManager : MonoBehaviour
     public List<CellObject> WallPrefabs;
     public CellObject EnemyPrefab;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
     {
         m_Grid = GetComponentInChildren<Grid>();

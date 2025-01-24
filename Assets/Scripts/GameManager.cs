@@ -89,6 +89,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Instantiating food indicator");
         GameObject foodUpdate = Instantiate(FoodUpdatePrefab, PlayerController.transform);
-        foodUpdate.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(amount.ToString());
+
+        var textMeshPro = foodUpdate.transform.GetChild(0).GetComponent<TextMeshPro>();
+        textMeshPro.SetText((amount > 0 ? "+" : "") + amount.ToString());
+        textMeshPro.color = amount < 0 ? Color.red : Color.green;
     }
 }

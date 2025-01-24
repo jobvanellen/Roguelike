@@ -644,6 +644,23 @@ MonoBehaviour:
       m_Action: Move Down
       m_Flags: 0
     m_Flags: 0
+  SkipTurn:
+    m_Name: Skip Turn
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 37b56667-6a4c-47a6-b65a-4eae2a8e90b6
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 90ec8236-9f62-4d9c-b197-ab388a61e27a
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip Turn
+      m_Flags: 0
+    m_Flags: 0
   MoveSpeed: 5
 --- !u!212 &1372654605
 SpriteRenderer:

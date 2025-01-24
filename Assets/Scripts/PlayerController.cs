@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public InputAction MoveRight;
     public InputAction MoveUp;
     public InputAction MoveDown;
+    public InputAction SkipTurn;
 
     public float MoveSpeed = 5.0f;
 
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
         MoveRight.Enable();
         MoveUp.Enable();
         MoveDown.Enable();
+        SkipTurn.Enable();
         GameManager.Instance.TurnManager.OnPlayerTurn += StartTurn;
     }
 
@@ -82,6 +84,12 @@ public class PlayerController : MonoBehaviour
         Vector2Int newCellTarget = m_CellPosition;
         if (GameManager.Instance.TurnManager.PlayerTurn)
         {
+            if (SkipTurn.WasPressedThisFrame())
+            {
+                Debug.Log("Skip Player Turn");
+                GameManager.Instance.TurnManager.Tick();
+                return;
+            }
             newCellTarget += InputToMoveDirection();
             m_HasMovedThisTurn = newCellTarget != m_CellPosition;
         }

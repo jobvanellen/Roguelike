@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private bool m_isMoving;
     private Vector3 m_TargetPosition;
 
-
     public InputAction MoveLeft;
     public InputAction MoveRight;
     public InputAction MoveUp;
@@ -25,10 +24,8 @@ public class PlayerController : MonoBehaviour
 
     public float MoveSpeed = 5.0f;
 
-
     private Animator m_Animator;
     private bool m_HasMovedThisTurn = false;
-
 
     private void Awake()
     {

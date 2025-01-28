@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         m_GameOverPanel.style.visibility = Visibility.Hidden;
         m_FoodAmount = InitialFood;
-        m_FoodLabel.text = "Food : " + m_FoodAmount;
+        m_FoodLabel.text = "Food: " + m_FoodAmount;
         m_CurrentLevel = 0;
         PlayerController.Init();
         NewLevel();
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
         m_CurrentLevel++;
-        m_LevelLabel.text = "Level : " + m_CurrentLevel;
+        m_LevelLabel.text = "Level: " + m_CurrentLevel;
     }
 
     public void UpdateFood(int amount)
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         IndicateFoodChange(amount);
 
         m_FoodAmount += amount;
-        m_FoodLabel.text = "Food : " + (m_FoodAmount < 0 ? "0" : m_FoodAmount) ;
+        m_FoodLabel.text = "Food: " + (m_FoodAmount < 0 ? "0" : m_FoodAmount) ;
 
         if (m_FoodAmount <= 0)
         {
